@@ -13,6 +13,6 @@ namespace E_CommerceForUdemy_Business.Repository.IRepository
         public Task<CategoryDTO> Update(CategoryDTO objDTO);
         public Task<int> Delete(int id);
         public Task<CategoryDTO> Get(int id);
-        public Task<List<CategoryDTO>> GetAll();
+        public Task<IEnumerable<CategoryDTO>> GetAll();
     }
 }

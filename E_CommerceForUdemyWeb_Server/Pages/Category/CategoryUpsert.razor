@@ -57,20 +57,25 @@
         }
 
     }
-    private void UpsertCategory()
+    private async Task UpsertCategory()
     {
 
         if (Id == 0)
         {
-            var result = _categoryRepository.Create(Category);
+            var result =await _categoryRepository.Create(Category);
+            //if (result)
+            //{
+            //    _navigationManager.NavigateTo("category");
+            //}
 
-            _navigationManager.NavigateTo("category");
         }
         else
         {
-            var result = _categoryRepository.Update(Category);
+            var result =await _categoryRepository.Update(Category);
 
         }
+
+       
         _navigationManager.NavigateTo("category");
 
 

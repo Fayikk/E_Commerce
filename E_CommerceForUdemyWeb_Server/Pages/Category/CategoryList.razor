@@ -56,11 +56,11 @@
 </div>
 
 @code {
-    private List<CategoryDTO> Categories { get; set; } =  new List<CategoryDTO>();
+    private IEnumerable<CategoryDTO> Categories { get; set; } =  new List<CategoryDTO>();
     public bool IsLoading { get; set; } = true;
-    protected override async Task OnInitializedAsync()
+    protected override async Task   OnInitializedAsync()
     {
-        Categories = await _categoryRepository.GetAll();
+        Categories =await _categoryRepository.GetAll();
         IsLoading = false;
     }
 
