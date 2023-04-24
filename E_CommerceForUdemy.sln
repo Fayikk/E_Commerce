@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_CommerceForUdemyWeb_Server", "E_CommerceForUdemyWeb_Server\E_CommerceForUdemyWeb_Server.csproj", "{E770FCC7-BE80-4320-9BB6-8C52988FEEB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemyWeb_Server", "E_CommerceForUdemyWeb_Server\E_CommerceForUdemyWeb_Server.csproj", "{E770FCC7-BE80-4320-9BB6-8C52988FEEB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_ForUdemy_Client", "ECommerce_ForUdemy_Client\ECommerce_ForUdemy_Client.csproj", "{BC299321-336C-4F55-95F4-6B8920D5A934}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_ForUdemy_Client", "ECommerce_ForUdemy_Client\ECommerce_ForUdemy_Client.csproj", "{BC299321-336C-4F55-95F4-6B8920D5A934}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_ForUdemy_Models", "ECommerce_ForUdemy_Models\ECommerce_ForUdemy_Models.csproj", "{D6DBECC6-7854-4925-A798-1B019587637B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_ForUdemy_Models", "ECommerce_ForUdemy_Models\ECommerce_ForUdemy_Models.csproj", "{D6DBECC6-7854-4925-A798-1B019587637B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_CommerceForUdemy_Business", "E_CommerceForUdemy_Business\E_CommerceForUdemy_Business.csproj", "{169CF259-A2DF-435E-9848-82F95CEB28FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_Business", "E_CommerceForUdemy_Business\E_CommerceForUdemy_Business.csproj", "{169CF259-A2DF-435E-9848-82F95CEB28FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_CommerceForUdemy_Common", "E_CommerceForUdemy_Common\E_CommerceForUdemy_Common.csproj", "{3CA984F9-0A76-496C-B14A-440B214A81B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_Common", "E_CommerceForUdemy_Common\E_CommerceForUdemy_Common.csproj", "{3CA984F9-0A76-496C-B14A-440B214A81B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_CommerceForUdemy_DataAccess", "E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj", "{7E9CE1AB-E0B6-4BE4-B80A-B0BA0B0A0FB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_DataAccess", "E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj", "{7E9CE1AB-E0B6-4BE4-B80A-B0BA0B0A0FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

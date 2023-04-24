@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ECommerce_ForUdemy_Models\ECommerce_ForUdemy_Models.csproj" />
+    <ProjectReference Include="..\E_CommerceForUdemy_Business\E_CommerceForUdemy_Business.csproj" />
     <ProjectReference Include="..\E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj" />
   </ItemGroup>
 

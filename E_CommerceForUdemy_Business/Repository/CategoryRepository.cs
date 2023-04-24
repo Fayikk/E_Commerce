@@ -28,7 +28,7 @@ namespace E_CommerceForUdemy_Business.Repository
         {
             var obj = _mapper.Map<CategoryDTO, Category>(objDTO);
             obj.CreatedDate = DateTime.Now;
-            var addedObj = _db.Categories.Add(obj);
+            var addedObj =await _db.Categories.AddAsync(obj);
             await _db.SaveChangesAsync();
 
             return _mapper.Map<Category, CategoryDTO>(addedObj.Entity);
@@ -55,9 +55,11 @@ namespace E_CommerceForUdemy_Business.Repository
             return new CategoryDTO();
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetAll()
+        public async Task<List<CategoryDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
+            var result =await _db.Categories.ToListAsync();
+            var map =  _mapper.Map<List<CategoryDTO>>(result);
+            return map;
         }
 
         public async Task<CategoryDTO> Update(CategoryDTO objDTO)

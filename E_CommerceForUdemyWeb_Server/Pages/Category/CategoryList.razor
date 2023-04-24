@@ -1,0 +1,68 @@
+﻿@page "/category"
+@using ECommerce_ForUdemy_Models;
+@using E_CommerceForUdemy_Business.Repository.IRepository;
+@inject ICategoryRepository _categoryRepository
+
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">Category</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <a href="category/create" class="btn btn-primary form-control">
+            Add New Category
+        </a>
+    </div>
+    <div class="col-12 p-3">
+        @if (Categories.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var objCat in Categories)
+                    {
+                        <tr>
+                            <td>
+                                @objCat.Name
+                            </td>
+                            <td>
+                                <NavLink href="@($"category/edit/{objCat.Id}")" class="btn-primary btn">Edit</NavLink>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            if (IsLoading)
+            {
+                //loading gif
+                <div class="text-center">
+                    <img src="/images/loading.gif">
+                </div>
+            }
+            else
+            {
+                //no contemt
+                <p>No records found</p>
+            }
+        }    
+    </div>
+</div>
+
+@code {
+    private List<CategoryDTO> Categories { get; set; } =  new List<CategoryDTO>();
+    public bool IsLoading { get; set; } = true;
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _categoryRepository.GetAll();
+        IsLoading = false;
+    }
+
+
+}
