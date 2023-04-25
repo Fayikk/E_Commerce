@@ -1,0 +1,118 @@
+﻿@page "/product"
+@using E_CommerceForUdemyWeb_Server.Service.IService;
+@inject IFileUpload _fileUpload;
+@inject IProductRepository _productRepository
+@inject IJSRuntime _js
+@inject NavigationManager _navigationManager
+<_DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click"></_DeleteConfirmation>
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">Products</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <a href="product/create" class="btn btn-primary form-control">
+            Add New Product
+        </a>
+    </div>
+    <div class="col-12 p-3">
+        @if (Products.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Shop Favorites</th>
+                        <th>Customer Favorites</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Products)
+                    {
+                        <tr>
+                            <td>
+                                @product.Name
+                            </td>
+                            <th>
+                                <input type="checkbox" disabled checked="@product.ShopFavourites">
+                            </th>
+                            <th>
+                                <input type="checkbox" disabled checked="@product.CustomerFavourites">
+                            </th>
+                            <th>
+                                @product.Category.Name
+                            </th>
+                            <td>
+                                <NavLink href="@($"product/edit/{product.Id}")" class="btn-primary btn">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="(()=>HandleDelete(product.Id))">Delete</button>
+                            </td>
+                        
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            if (IsLoading)
+            {
+                //loading gif
+                <div class="text-center">
+                    <img src="/images/loading.gif">
+                </div>
+            }
+            else
+            {
+                //no contemt
+                <p>No records found</p>
+            }
+        }    
+       
+    </div>
+</div>
+
+@code {
+    private IEnumerable<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+    public bool IsLoading { get; set; } 
+    private int DeleteProductId { get; set; } = 0;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsLoading = true;
+            StateHasChanged();
+            Products = await _productRepository.GetAll();
+            IsLoading = false;
+            StateHasChanged();
+        }
+
+    }
+
+    private void HandleDelete(int id)
+    {
+        DeleteProductId = id;
+        _js.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+    public async Task ConfirmDelete_Click(bool IsConfirmed)
+    {
+        IsLoading = true;
+        if (IsConfirmed && DeleteProductId != 0)
+        {
+            ProductDTO product = await _productRepository.Get(DeleteProductId);
+            if (!product.ImageUrl.Contains("default.png"))
+            {
+                _fileUpload.DeleteFile(product.ImageUrl);
+                StateHasChanged();
+
+
+
+            }
+            await _productRepository.Delete(DeleteProductId);
+            Products = await _productRepository.GetAll();
+           await _js.InvokeVoidAsync("HideDeleteConfirmationModal");
+        }
+        IsLoading = true;
+
+    }
+}

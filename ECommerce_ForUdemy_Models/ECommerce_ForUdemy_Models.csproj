@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

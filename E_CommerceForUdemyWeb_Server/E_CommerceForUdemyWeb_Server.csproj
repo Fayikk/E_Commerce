@@ -21,4 +21,8 @@
     <ProjectReference Include="..\E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
+
 </Project>
