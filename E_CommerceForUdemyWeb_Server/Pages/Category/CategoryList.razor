@@ -2,7 +2,8 @@
 @using ECommerce_ForUdemy_Models;
 @using E_CommerceForUdemy_Business.Repository.IRepository;
 @inject ICategoryRepository _categoryRepository
-
+@inject IJSRuntime _js
+<_DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click"></_DeleteConfirmation>
 <div class="row mt-4">
     <div class="col-6">
         <h4 class="card-title text-info">Category</h4>
@@ -31,7 +32,9 @@
                             </td>
                             <td>
                                 <NavLink href="@($"category/edit/{objCat.Id}")" class="btn-primary btn">Edit</NavLink>
+                                <button class="btn btn-danger" @onclick="(()=>HandleDelete(objCat.Id))">Delete</button>
                             </td>
+                        
                         </tr>
                     }
                 </tbody>
@@ -57,12 +60,33 @@
 
 @code {
     private IEnumerable<CategoryDTO> Categories { get; set; } =  new List<CategoryDTO>();
-    public bool IsLoading { get; set; } = true;
-    protected override async Task   OnInitializedAsync()
+    public bool IsLoading { get; set; } 
+    private int DeleteCategoryId { get; set; } = 0;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Categories =await _categoryRepository.GetAll();
-        IsLoading = false;
+        if (firstRender)
+        {
+            IsLoading = true;
+            StateHasChanged();
+            Categories = await _categoryRepository.GetAll();
+            IsLoading = false;
+            StateHasChanged();
+        }
+       
     }
 
-
+    private void HandleDelete(int id)
+    {
+        DeleteCategoryId = id;
+        _js.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+    public async Task ConfirmDelete_Click(bool IsConfirmed)
+    {
+        if (IsConfirmed && DeleteCategoryId!=0)
+        {
+            await _categoryRepository.Delete(DeleteCategoryId);
+            Categories = await _categoryRepository.GetAll();
+           await _js.InvokeVoidAsync("HideDeleteConfirmationModal");
+        }
+    }
 }
