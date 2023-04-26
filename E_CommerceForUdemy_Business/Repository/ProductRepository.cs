@@ -47,7 +47,7 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<ProductDTO> Get(int id)
         {
-            var obj = await _db.Products.Include(x=>x.Category).FirstOrDefaultAsync(u => u.Id == id);
+            var obj = await _db.Products.Include(x=>x.Category).Include(x=>x.ProductPrices).FirstOrDefaultAsync(u => u.Id == id);
             if (obj != null)
             {
                 return _mapper.Map<Product, ProductDTO>(obj);
@@ -57,7 +57,7 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x=>x.Category));
+            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x=>x.Category).Include(x=>x.ProductPrices));
         }
 
         public async Task<ProductDTO> Update(ProductDTO objDTO)
