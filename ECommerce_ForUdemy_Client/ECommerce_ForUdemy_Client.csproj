@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerce_ForUdemy_Models\ECommerce_ForUdemy_Models.csproj" />
+    <ProjectReference Include="..\E_CommerceForUdemy_Common\E_CommerceForUdemy_Common.csproj" />
   </ItemGroup>
 
 </Project>
