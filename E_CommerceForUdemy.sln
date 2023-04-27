@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_Common",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_DataAccess", "E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj", "{7E9CE1AB-E0B6-4BE4-B80A-B0BA0B0A0FB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_CommerceForUdemy_API", "E_CommerceForUdemy_API\E_CommerceForUdemy_API.csproj", "{5283099F-BD1A-4394-AB0A-5B60F86B4D45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_API", "E_CommerceForUdemy_API\E_CommerceForUdemy_API.csproj", "{5283099F-BD1A-4394-AB0A-5B60F86B4D45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
