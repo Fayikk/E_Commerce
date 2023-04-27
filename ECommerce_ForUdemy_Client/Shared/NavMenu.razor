@@ -1,8 +1,16 @@
-﻿
+﻿@using ECommerce_ForUdemy_Client.Service.IService;
+@using ECommerce_ForUdemy_Models;
+@inject IProductService _productService
+@inject ICategoryService _categoryService
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Adventures</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        @foreach (var item in Categories)
+        {
+            <a class="navbar-brand" href="category/product/@item.Id">@item.Name</a>
+
+        }
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -53,3 +61,11 @@
     </div>
   </div>
 </nav>
+
+@code {
+    public IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _categoryService.GetCategoriesAsync();
+    }
+}

@@ -60,6 +60,14 @@ namespace E_CommerceForUdemy_Business.Repository
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x=>x.Category).Include(x=>x.ProductPrices));
         }
 
+        public async Task<List<ProductDTO>> GetProductByCategoryId(int id)
+        {
+            var result = await _db.Products.Where(x => x.CategoryId == id).ToListAsync();
+            var mapper = _mapper.Map<List<Product>, List<ProductDTO>>(result);
+            return mapper;
+
+        }
+
         public async Task<ProductDTO> Update(ProductDTO objDTO)
         {
             var objFromDb = await _db.Products.FirstOrDefaultAsync(u => u.Id == objDTO.Id);

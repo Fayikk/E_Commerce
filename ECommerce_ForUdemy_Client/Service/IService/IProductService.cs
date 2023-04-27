@@ -6,6 +6,7 @@ namespace ECommerce_ForUdemy_Client.Service.IService
     {
         public  Task<IEnumerable<ProductDTO>> GetAll();
         public Task<ProductDTO> Get(int productId);
+        public Task<List<ProductDTO>> GetProductByCategory(int categoryId);
             
     }
 }

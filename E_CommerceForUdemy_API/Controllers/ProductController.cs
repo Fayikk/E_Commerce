@@ -45,5 +45,20 @@ namespace E_CommerceForUdemy_API.Controllers
 
             return Ok(product);
         }
+
+        [HttpGet("GetProduct/{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var result = await _productRepository.GetProductByCategoryId(id);
+            if (result.Count == 0)
+            {
+                return BadRequest(new ErrorModelDTO()
+                {
+                    ErrorMessage = "Product is not found",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+            return Ok(result);
+        }
     }
 }

@@ -50,5 +50,21 @@ namespace ECommerce_ForUdemy_Client.Service
             }
             return new List<ProductDTO>();
         }
+
+        public async Task<List<ProductDTO>> GetProductByCategory(int categoryId)
+        {
+            var response = await _httpClient.GetAsync($"/api/product/GetProduct/{categoryId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content =await response.Content.ReadAsStringAsync();
+                var products = JsonConvert.DeserializeObject<List<ProductDTO>>(content);
+                foreach (var item in products)
+                {
+                    item.ImageUrl = BaseServerUrl + item.ImageUrl;
+                }
+                return products;
+            }
+            return new List<ProductDTO>();
+        }
     }
 }

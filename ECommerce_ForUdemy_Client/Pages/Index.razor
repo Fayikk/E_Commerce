@@ -1,4 +1,6 @@
 ﻿@page "/"
+@page "/category/product/{CategoryId:int}"
+
 @using ECommerce_ForUdemy_Client.Service.IService;
 @using ECommerce_ForUdemy_Models;
 @inject IProductService _productService
@@ -73,12 +75,35 @@ else
 
 }
 @code {
+    [Parameter]
+    public int CategoryId { get; set; }
     public bool IsProcessing { get; set; } = false;
     public IEnumerable<ProductDTO> Products { get; set; } = new List<ProductDTO>();
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    //{
+
+    //    IsProcessing = true;
+    //    Products = await _productService.GetAll();
+    //    IsProcessing = false;
+
+
+
+    //}
+
+    protected override async Task OnParametersSetAsync()
     {
-        IsProcessing = true;
-        Products = await _productService.GetAll();
-        IsProcessing = false;
+        if(CategoryId == 0)
+        {
+            IsProcessing = true;
+            Products = await _productService.GetAll();
+            IsProcessing = false;
+        }
+        else
+        {
+            IsProcessing = true;
+            Products = await _productService.GetProductByCategory(CategoryId);
+            IsProcessing = false;
+        }
+      
     }
 }
