@@ -8,6 +8,8 @@ namespace ECommerce_ForUdemy_Client.Service
     public class CartService : ICartService
     {
         private readonly ILocalStorageService _localStorageService;
+        public event Action OnChange;
+        
         public CartService(ILocalStorageService localStorageService)
         {
             _localStorageService = localStorageService;
@@ -34,6 +36,7 @@ namespace ECommerce_ForUdemy_Client.Service
             }
 
             await _localStorageService.SetItemAsync(Keys.ShoppingCart, cart);
+            OnChange.Invoke();
         }
 
         public async Task Increment(ShoppingCart cartToAdd)
@@ -63,7 +66,7 @@ namespace ECommerce_ForUdemy_Client.Service
                 });
             }
             await _localStorageService.SetItemAsync(Keys.ShoppingCart, cart);
-
+            OnChange.Invoke();
         }
     }
 }

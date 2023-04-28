@@ -14,5 +14,7 @@ namespace E_CommerceForUdemy_Business.Repository.IRepository
         public Task<int> Delete(int id);
         public Task<ProductPriceDTO> Get(int id);
         public Task<IEnumerable<ProductPriceDTO>> GetAll(int? id = null);
+
+
     }
 }
