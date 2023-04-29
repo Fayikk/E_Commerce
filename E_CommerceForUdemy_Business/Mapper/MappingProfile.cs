@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_CommerceForUdemy_DataAccess;
+using E_CommerceForUdemy_DataAccess.ViewModel;
 using ECommerce_ForUdemy_Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace E_CommerceForUdemy_Business.Mapper
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<ProductPrice, ProductPriceDTO>().ReverseMap();
+            CreateMap<OrderHeader,OrderHeaderDTO>().ReverseMap();   
+            CreateMap<OrderDetail,OrderDetailDTO>().ReverseMap();   
+            CreateMap<Order,OrderDTO>().ReverseMap();
         }
     }
 }

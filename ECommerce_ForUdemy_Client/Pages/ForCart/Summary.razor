@@ -1,0 +1,229 @@
+﻿@page "/Summary"
+@using Blazored.LocalStorage;
+@using ECommerce_ForUdemy_Client.Service.IService;
+@using ECommerce_ForUdemy_Client.ViewModels;
+@using ECommerce_ForUdemy_Models;
+@using E_CommerceForUdemy_Common;
+@using E_CommerceForUdemy_DataAccess;
+@inject IProductService _productService
+@inject ILocalStorageService _localStorageService
+@if (IsProcessing)
+{
+    <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px">
+        <img src="images/loading.gif" />
+
+    </div>
+}
+else
+{
+    <div class="container my-5 py-5">
+
+        <!--Section: Design Block-->
+        <section>
+
+            <div class="row">
+                
+
+                        <div class="col-md-8 mb-8">
+                            <EditForm Model="Order.OrderHeader" OnValidSubmit="HandleCheckout">
+                                <DataAnnotationsValidator></DataAnnotationsValidator>
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="mb-0 text-font text-uppercase">Delivery address</h5>
+                                </div>
+                                    <div class="card-body">
+                                       
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="form11Example1">First name</label>
+
+                                                    <InputText id="form11Example1" class="form-control" @bind-Value="@Order.OrderHeader.FirstName" />
+                                                    <ValidationMessage For="()=>Order.OrderHeader.FirstName" ></ValidationMessage>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="form11Example2">Last name</label>
+
+                                                    <InputText id="form11Example2" class="form-control" @bind-Value="@Order.OrderHeader.LastName" />
+                                                    <ValidationMessage For="()=>Order.OrderHeader.LastName"></ValidationMessage>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Text input -->
+                                        <!-- Text input -->
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="form11Example4">Address</label>
+
+                                            <InputText  id="form11Example4" class="form-control" @bind-Value="@Order.OrderHeader.Address"/>
+                                            <ValidationMessage For="()=>Order.OrderHeader.Address" ></ValidationMessage>
+                                        </div>
+
+                                        <!-- Email input -->
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="form11Example5">Email</label>
+
+                                            <InputText  id="form11Example5" class="form-control" @bind-Value="@Order.OrderHeader.Email" />
+                                            <ValidationMessage For="()=>Order.OrderHeader.Email" ></ValidationMessage>
+                                        </div>
+
+                                        <!-- Number input -->
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="form11Example6">Phone</label>
+
+                                            <InputText  id="form11Example6" class="form-control" @bind-Value="@Order.OrderHeader.Phone" />
+                                            <ValidationMessage For="()=>Order.OrderHeader.Phone"></ValidationMessage>
+                                        </div>
+
+                                        <!-- Message input -->
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="form11Example7">Additional information</label>
+
+                                            <InputTextArea class="form-control" id="form11Example7" rows="4" @bind-Value="@Order.OrderHeader.AdditionalInformation" ></InputTextArea>
+                                            <ValidationMessage For="()=>Order.OrderHeader.AdditionalInformation"></ValidationMessage>
+                                        </div>
+
+                                       
+
+                                          
+
+                                    </div>
+                                
+                               
+                                         <div class="text-center">
+                                <button type="submit" style="font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+                            font-style: normal;
+                            font-size: .75rem;
+                            font-weight: 700;
+                            background-color: hsl(90, 40%, 50%);
+                            color: white;" class="btn button-order col-md-10">
+                                    Place order
+                                </button>
+                            </div>
+                            </div>
+                </EditForm>
+
+
+            </div>
+
+
+
+                <div class="col-md-4 mb-4 position-static">
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0 text-font">
+                                1 item <span class="float-end mt-1"
+                                         style="font-size: 13px ;">Edit</span>
+                            </h5>
+                        </div>
+                        @foreach (var item in Order.OrderDetails)
+                        {
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="@item.Product.ImageUrl"
+                                     class="rounded-3" style="width: 100px;" alt="@item.ProductName" />
+                                    </div>
+                                    <div class="col-md-6 ms-3">
+                                        <span class="mb-0 text-price" style="padding: 0 .625rem;
+                                        font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+                                        font-style: normal;
+                                        font-size: .75rem;
+                                        font-weight: 700;
+                                        line-height: .813rem;
+                                        letter-spacing: 1.6px;">@((item.Price*item.Count).ToString("c"))</span>
+                                        <p class="mb-0 text-descriptions">@item.ProductName</p>
+                                        <span class="text-descriptions fw-bold" style="font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+                                                font-style: normal;
+                                                font-size: .75rem;
+                                                font-weight: 400;
+                                                line-height: 1.125rem;
+                                                margin: .313rem 0 .938rem;
+                                                padding: 0 .625rem;">Publisher</span> <span class="text-descriptions fw-bold">@item.Publisher</span>
+                                        <p class="text-descriptions mt-0">
+                                            Qty:<span class="text-descriptions fw-bold">@item.Count</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            
+
+
+                            </div>
+
+                        }
+                        <div class="card-footer mt-4">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 text-muted">
+                                    Subtotal
+                                    <span>@Order.OrderHeader.OrderTotal.ToString("c")</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 fw-bold text-uppercase">
+                                    Total to pay
+                                    <span>@Order.OrderHeader.OrderTotal.ToString("c")</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                  
+                </div>
+
+            </div>
+        </section>
+        <!--Section: Design Block-->
+
+    </div>
+}
+
+
+
+
+
+@code {
+    public bool IsProcessing { get; set; } = false;
+    private OrderDTO Order { get; set; } = null;
+    private IEnumerable<ProductDTO> Products { get; set; } =new List<ProductDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsProcessing = true;
+        List<ShoppingCart> cart = await _localStorageService.GetItemAsync<List<ShoppingCart>>(Keys.ShoppingCart);
+        Products = await _productService.GetAll();
+        Order = new()
+            {
+                OrderHeader = new()
+                {
+                    OrderTotal = 0,
+                    Status = Keys.Status_Pending
+                },
+                OrderDetails = new List<OrderDetailDTO>()
+            };
+
+        foreach (var item in cart)
+        {
+            ProductDTO product = Products.FirstOrDefault(u => u.Id == item.ProductId);
+            ProductPriceDTO productPrice = product.ProductPrices.FirstOrDefault(u => u.Id == item.ProductPriceId);
+
+            OrderDetailDTO orderDetailDTO = new()
+                {
+                    ProductId = item.ProductId,
+                    Publisher = productPrice.Publisher,
+                    Count = item.Count,
+                    Price = productPrice.Price,
+                    ProductName = product.Name,
+                    Product = product
+                };
+            Order.OrderDetails.Add(orderDetailDTO);
+            Order.OrderHeader.OrderTotal += (cart.Count * productPrice.Price);
+        }
+
+        IsProcessing = false;
+    }
+
+    private async Task HandleCheckout()
+    {
+        
+    }
+}
