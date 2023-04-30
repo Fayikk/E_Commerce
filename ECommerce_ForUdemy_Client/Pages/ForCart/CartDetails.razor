@@ -7,6 +7,7 @@
 @inject ILocalStorageService _localStorage
 @inject IProductService _productService
 @inject ICartService _cartService
+@inject IDiscountService _discountService
 @if (IsProcessing)
 {
     <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px">
@@ -80,15 +81,7 @@ else
 
                         }
 
-                        <div class="card mb-4">
-                            <div class="card-body p-4 d-flex flex-row">
-                                <div class="form-outline flex-fill">
-                                    <input type="text" id="form1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form1">Discound code</label>
-                                </div>
-                                <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
-                            </div>
-                        </div>
+                    
 
                         <div class="card">
                             <div class="card-body d-flex justify-content-between">
@@ -111,7 +104,7 @@ else
     private List<ShoppingCart> ShoppingCart = new List<ShoppingCart>();
     private IEnumerable<ProductDTO> Products { get; set; }
     private double OrderTotal { get; set; } = 0;
-
+    public string DiscountCode { get; set; } = null;
     protected override async Task OnInitializedAsync()
     {
         IsProcessing = true;
@@ -140,7 +133,7 @@ else
             {
                 Count = Count,
                 ProductId = ProductId,
-                ProductPriceId = ProductPriceId
+                ProductPriceId = ProductPriceId,
             });
 
         await LoadCart();
@@ -154,10 +147,28 @@ else
             {
                 Count = Count,
                 ProductId = ProductId,
-                ProductPriceId = ProductPriceId
+                ProductPriceId = ProductPriceId,
             });
 
         await LoadCart();
         IsProcessing = false;
     }
+
+    //private async Task SendCouponCode(string code)
+    //{
+    //    var result = await _discountService.ImplementCouponCode(code);
+    //    if (result == false)
+    //    {
+    //        ShoppingCart = await _localStorage.GetItemAsync<List<ShoppingCart>>(Keys.ShoppingCart);
+    //        foreach (var item in ShoppingCart)
+    //        {
+    //            //item.CartPrice = item.CartPrice - ((item.CartPrice * 20) / 100);
+
+    //        }
+    //        await _localStorage.SetItemAsync(Keys.ShoppingCart, ShoppingCart);
+    //        await LoadCart();
+
+    //    }
+
+    //}
 }

@@ -25,14 +25,14 @@ namespace E_CommerceForUdemy_Business.Repository
             return discount.CouponCode;
         }
 
-        public async Task<Discount> ImplementCoupon(string couponCode)
+        public async Task<bool> ImplementCoupon(string couponCode)
         {
             var result = await _context.Discounts.FirstOrDefaultAsync(x => x.CouponCode.ToLower().Equals(couponCode.ToLower()));
             if (result != null)
             {
-                return result;
+                return true;
             }
-            return null;
+            return false;
         }
     }
 }

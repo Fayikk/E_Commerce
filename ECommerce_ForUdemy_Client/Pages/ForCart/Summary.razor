@@ -7,6 +7,7 @@
 @using E_CommerceForUdemy_DataAccess;
 @inject IProductService _productService
 @inject ILocalStorageService _localStorageService
+@inject IDiscountService _discountService
 @if (IsProcessing)
 {
     <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px">
@@ -95,13 +96,14 @@ else
                                
                                          <div class="text-center">
                                 <button type="submit" style="font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
-                            font-style: normal;
-                            font-size: .75rem;
-                            font-weight: 700;
-                            background-color: hsl(90, 40%, 50%);
-                            color: white;" class="btn button-order col-md-10">
+                                        font-style: normal;
+                                        font-size: .75rem;
+                                        font-weight: 700;
+                                        background-color: hsl(90, 40%, 50%);
+                                        color: white;" class="btn button-order col-md-10">
                                     Place order
                                 </button>
+                         
                             </div>
                             </div>
                 </EditForm>
@@ -148,7 +150,7 @@ else
                                         </p>
                                     </div>
                                 </div>
-                            
+                                 
 
 
                             </div>
@@ -165,6 +167,16 @@ else
                                     <span>@Order.OrderHeader.OrderTotal.ToString("c")</span>
                                 </li>
                             </ul>
+                            <div class="card mb-4">
+                                <div class="card-body p-4 d-flex flex-row">
+                                    <div class="form-outline flex-fill">
+                                        <label class="form-label" for="form1">Discound code</label>
+
+                                        <InputText id="form1" class="form-control form-control-lg" @bind-Value="@CouponCode" />
+                                    </div>
+                                    <button @onclick="(()=>SendCouponCode(CouponCode))" type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                   
@@ -185,6 +197,7 @@ else
     public bool IsProcessing { get; set; } = false;
     private OrderDTO Order { get; set; } = null;
     private IEnumerable<ProductDTO> Products { get; set; } =new List<ProductDTO>();
+    private string CouponCode { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -200,6 +213,7 @@ else
                 },
                 OrderDetails = new List<OrderDetailDTO>()
             };
+
 
         foreach (var item in cart)
         {
@@ -225,5 +239,10 @@ else
     private async Task HandleCheckout()
     {
         
+    }
+
+    private async Task SendCouponCode(string code)
+    {
+      
     }
 }

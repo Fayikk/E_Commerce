@@ -58,11 +58,11 @@ else
                             <div class="col-2 text-primary"><h4>Count</h4></div>
                             <div class="col-10">
                                 <InputNumber @bind-Value="DetailsVM.Count" class="form-control" />
-                                <ValidationMessage For="()=>DetailsVM.Count" ></ValidationMessage>
+                                <ValidationMessage For="()=>DetailsVM.Count"></ValidationMessage>
                             </div>
                         </div>
                     }
-                 
+
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                     <p style="font-size: 24px; font-weight: bold;">Ürün Fiyatı: $50.00</p>
@@ -81,14 +81,14 @@ else
             </div>
         </div>
     </EditForm>
-   
+
 
 }
 
 
- 
- 
-  
+
+
+
 
 @code {
     [Parameter]
@@ -110,15 +110,21 @@ else
 
     private async Task AddToCart()
     {
-        ShoppingCart shopCart = new()
-            {
-                Count = DetailsVM.Count,
-                ProductId = ProductId,
-                ProductPriceId = DetailsVM.SelectedProductPriceId,
+       
+            ShoppingCart shopCart = new()
+                {
+                    Count = DetailsVM.Count,
+                    ProductId = ProductId,
+                    ProductPriceId = DetailsVM.SelectedProductPriceId,
 
-            };
+                };
             await _cartService.Increment(shopCart);
-             _navigationManager.NavigateTo("/");
+            _navigationManager.NavigateTo("/");
+      
+
+
 
     }
 }
+
+

@@ -3,6 +3,8 @@
 @using E_CommerceForUdemy_Business.Repository.IRepository;
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _js
+@inject NavigationManager _navigationManager
+@*@attribute [Authorize]*@
 <_DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click"></_DeleteConfirmation>
 <div class="row mt-4">
     <div class="col-6">
@@ -62,6 +64,22 @@
     private IEnumerable<CategoryDTO> Categories { get; set; } =  new List<CategoryDTO>();
     public bool IsLoading { get; set; } 
     private int DeleteCategoryId { get; set; } = 0;
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; } 
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            var uri = new Uri(_navigationManager.Uri);
+            _navigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}",forceLoad:true);
+        }
+    }
+
+
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

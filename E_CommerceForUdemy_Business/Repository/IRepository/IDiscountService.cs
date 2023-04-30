@@ -10,6 +10,6 @@ namespace E_CommerceForUdemy_Business.Repository.IRepository
     public interface IDiscountService
     {
         Task<string> CouponCode(Discount discount);   
-        Task<Discount> ImplementCoupon(string couponCode);  
+        Task<bool> ImplementCoupon(string couponCode);  
     }
 }

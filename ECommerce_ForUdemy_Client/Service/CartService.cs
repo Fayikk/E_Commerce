@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using E_CommerceForUdemy_Common;
+using E_CommerceForUdemy_DataAccess.Data;
 using ECommerce_ForUdemy_Client.Service.IService;
 using ECommerce_ForUdemy_Client.ViewModels;
 
@@ -13,6 +14,7 @@ namespace ECommerce_ForUdemy_Client.Service
         public CartService(ILocalStorageService localStorageService)
         {
             _localStorageService = localStorageService;
+      
         }
 
         public async Task Decrement(ShoppingCart cartToDecrement)
@@ -31,6 +33,7 @@ namespace ECommerce_ForUdemy_Client.Service
                     else
                     {
                         cart[i].Count -= cartToDecrement.Count;
+                        //cart[i].CartPrice -= cartToDecrement.CartPrice;
                     }
                 }
             }
@@ -54,6 +57,7 @@ namespace ECommerce_ForUdemy_Client.Service
                 {
                     itemInCart = true;
                     obj.Count += cartToAdd.Count;
+                    //obj.CartPrice = obj.CartPrice + cartToAdd.CartPrice;
                 }
             }
             if (!itemInCart)
@@ -62,7 +66,8 @@ namespace ECommerce_ForUdemy_Client.Service
                 {
                     ProductId = cartToAdd.ProductId,
                     ProductPriceId = cartToAdd.ProductPriceId,
-                    Count = cartToAdd.Count
+                    Count = cartToAdd.Count,
+                    //CartPrice = cartToAdd.CartPrice,
                 });
             }
             await _localStorageService.SetItemAsync(Keys.ShoppingCart, cart);
