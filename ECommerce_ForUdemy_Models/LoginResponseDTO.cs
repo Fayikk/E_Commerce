@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ECommerce_ForUdemy_Models
 {
-    public class ErrorModelDTO
+    public class LoginResponseDTO
     {
-        public string Title { get; set; }   
-        public int StatusCode { get; set; }
+        public bool IsAuthSuccessful { get; set; } 
         public string ErrorMessage { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public string Token { get; set; }
+        public UserDTO UserDTO { get; set; }    
     }
 }
