@@ -1,0 +1,12 @@
+﻿@page "/logout"
+@using ECommerce_ForUdemy_Client.Service.IService;
+@inject IAuthenticationService _authService
+@inject NavigationManager _navigationManager
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        await _authService.Logout();
+        _navigationManager.NavigateTo("/");
+    }
+}

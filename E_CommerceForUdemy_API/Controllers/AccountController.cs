@@ -35,45 +35,43 @@ namespace E_CommerceForUdemy_API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpRequestDTO requestDTO)
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequestDTO signUpRequestDTO)
         {
-            if (!ModelState.IsValid || requestDTO == null)
+            if (signUpRequestDTO == null || !ModelState.IsValid)
             {
-                return BadRequest(new ErrorModelDTO()
-                {
-                    ErrorMessage = "Something went wrong",
-                    StatusCode = StatusCodes.Status404NotFound,
-                });
+                return BadRequest();
             }
-            ApplicationUser user = new()
+
+            var user = new ApplicationUser
             {
-                UserName = requestDTO.Email,
-                Email = requestDTO.Email,
-                Name = requestDTO.Name,
-                PhoneNumber = requestDTO.PhoneNumber,
-                EmailConfirmed = true,
+                UserName = signUpRequestDTO.Email,
+                Email = signUpRequestDTO.Email,
+                Name = signUpRequestDTO.Name,
+                PhoneNumber = signUpRequestDTO.PhoneNumber,
+                EmailConfirmed = true
             };
-            var result = await _userManager.CreateAsync(user, requestDTO.Password);
+
+            var result = await _userManager.CreateAsync(user, signUpRequestDTO.Password);
 
             if (!result.Succeeded)
             {
-                return  BadRequest(new ErrorModelDTO()
+                return BadRequest(new SignUpResponseDTO()
                 {
-                    Errors = result.Errors.Select(u => u.Description),
-                    StatusCode = StatusCodes.Status404NotFound,
+                    IsRegisterationSuccessful = false,
+                    Errors = result.Errors.Select(u => u.Description)
                 });
             }
-            var role = await _userManager.AddToRoleAsync(user, Keys.Role_Customer);
-            if (!role.Succeeded)
-            {
-                return BadRequest(new ErrorModelDTO()
-                {
-                    ErrorMessage = "Something went wrong",
-                    StatusCode = StatusCodes.Status404NotFound,
-                });
-            }
-            return StatusCode(204);
 
+            var roleResult = await _userManager.AddToRoleAsync(user, Keys.Role_Customer);
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(new SignUpResponseDTO()
+                {
+                    IsRegisterationSuccessful = false,
+                    Errors = result.Errors.Select(u => u.Description)
+                });
+            }
+            return StatusCode(201);
         }
 
 

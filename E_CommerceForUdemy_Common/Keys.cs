@@ -18,5 +18,8 @@ namespace E_CommerceForUdemy_Common
 
         public const string Role_Admin = "Admin";
         public const string Role_Customer = "Customer";
+
+        public const string Local_Token = "Jwt_Token";
+        public const string Local_UserDetails = "UserDetails";
     }
 }
