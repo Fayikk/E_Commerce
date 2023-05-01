@@ -5,9 +5,12 @@
 @using ECommerce_ForUdemy_Models;
 @using E_CommerceForUdemy_Common;
 @using E_CommerceForUdemy_DataAccess;
+@using Microsoft.AspNetCore.Authorization;
 @inject IProductService _productService
 @inject ILocalStorageService _localStorageService
 @inject IDiscountService _discountService
+@attribute [Authorize]
+
 @if (IsProcessing)
 {
     <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px">
@@ -232,6 +235,16 @@ else
             Order.OrderDetails.Add(orderDetailDTO);
             Order.OrderHeader.OrderTotal += (cart.Count * productPrice.Price);
         }
+
+        if(await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails) != null)
+        {
+            var userDetail = await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails);
+            Order.OrderHeader.Email = userDetail.Email;
+            Order.OrderHeader.UserId = userDetail.Id;
+            Order.OrderHeader.FirstName = userDetail.Name;
+            Order.OrderHeader.Phone = userDetail.PhoneNumber;
+        }
+
 
         IsProcessing = false;
     }

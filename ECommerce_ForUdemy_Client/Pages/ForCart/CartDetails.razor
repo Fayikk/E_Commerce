@@ -4,10 +4,12 @@
 @using ECommerce_ForUdemy_Client.ViewModels;
 @using ECommerce_ForUdemy_Models;
 @using E_CommerceForUdemy_Common;
+@using Microsoft.AspNetCore.Authorization;
 @inject ILocalStorageService _localStorage
 @inject IProductService _productService
 @inject ICartService _cartService
 @inject IDiscountService _discountService
+
 @if (IsProcessing)
 {
     <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px">
