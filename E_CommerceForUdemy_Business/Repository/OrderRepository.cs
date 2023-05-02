@@ -6,12 +6,6 @@ using E_CommerceForUdemy_DataAccess.Data;
 using E_CommerceForUdemy_DataAccess.ViewModel;
 using ECommerce_ForUdemy_Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace E_CommerceForUdemy_Business.Repository
 {
@@ -60,8 +54,7 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<OrderDTO> Create(OrderDTO objDTO)
         {
-            try
-            {
+           
                 var obj = _mapper.Map<OrderDTO, Order>(objDTO);
                 _db.OrderHeaders.Add(obj.OrderHeader);
                 await _db.SaveChangesAsync();
@@ -79,11 +72,7 @@ namespace E_CommerceForUdemy_Business.Repository
                     OrderDetails = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailDTO>>(obj.OrderDetails).ToList()
                 };
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            
 
             return objDTO;
         }

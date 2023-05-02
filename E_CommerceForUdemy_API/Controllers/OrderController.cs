@@ -45,5 +45,13 @@ namespace E_CommerceForUdemy_API.Controllers
 
             return Ok(orderHeader);
         }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody]StripePaymentDTO paymentDTO)
+        {
+            paymentDTO.Order.OrderHeader.OrderDate= DateTime.Now;   
+            var result = _orderRepository.Create(paymentDTO.Order);
+            return Ok(result);
+        }
     }
 }

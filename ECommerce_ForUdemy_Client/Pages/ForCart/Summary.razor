@@ -9,6 +9,9 @@
 @inject IProductService _productService
 @inject ILocalStorageService _localStorageService
 @inject IDiscountService _discountService
+@inject IOrderService _orderService
+@inject IPaymentService _paymentService
+@inject IJSRuntime _jsRuntime
 @attribute [Authorize]
 
 @if (IsProcessing)
@@ -24,98 +27,58 @@ else
 
         <!--Section: Design Block-->
         <section>
-
+          
             <div class="row">
-                
-
-                        <div class="col-md-8 mb-8">
-                            <EditForm Model="Order.OrderHeader" OnValidSubmit="HandleCheckout">
-                                <DataAnnotationsValidator></DataAnnotationsValidator>
-                            <div class="card mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="mb-0 text-font text-uppercase">Delivery address</h5>
-                                </div>
-                                    <div class="card-body">
-                                       
-                                        <div class="row mb-4">
-                                            <div class="col">
-                                                <div class="form-outline">
-                                                    <label class="form-label" for="form11Example1">First name</label>
-
-                                                    <InputText id="form11Example1" class="form-control" @bind-Value="@Order.OrderHeader.FirstName" />
-                                                    <ValidationMessage For="()=>Order.OrderHeader.FirstName" ></ValidationMessage>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-outline">
-                                                    <label class="form-label" for="form11Example2">Last name</label>
-
-                                                    <InputText id="form11Example2" class="form-control" @bind-Value="@Order.OrderHeader.LastName" />
-                                                    <ValidationMessage For="()=>Order.OrderHeader.LastName"></ValidationMessage>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Text input -->
-                                        <!-- Text input -->
-                                        <div class="form-outline mb-4">
-                                            <label class="form-label" for="form11Example4">Address</label>
-
-                                            <InputText  id="form11Example4" class="form-control" @bind-Value="@Order.OrderHeader.Address"/>
-                                            <ValidationMessage For="()=>Order.OrderHeader.Address" ></ValidationMessage>
-                                        </div>
-
-                                        <!-- Email input -->
-                                        <div class="form-outline mb-4">
-                                            <label class="form-label" for="form11Example5">Email</label>
-
-                                            <InputText  id="form11Example5" class="form-control" @bind-Value="@Order.OrderHeader.Email" />
-                                            <ValidationMessage For="()=>Order.OrderHeader.Email" ></ValidationMessage>
-                                        </div>
-
-                                        <!-- Number input -->
-                                        <div class="form-outline mb-4">
-                                            <label class="form-label" for="form11Example6">Phone</label>
-
-                                            <InputText  id="form11Example6" class="form-control" @bind-Value="@Order.OrderHeader.Phone" />
-                                            <ValidationMessage For="()=>Order.OrderHeader.Phone"></ValidationMessage>
-                                        </div>
-
-                                        <!-- Message input -->
-                                        <div class="form-outline mb-4">
-                                            <label class="form-label" for="form11Example7">Additional information</label>
-
-                                            <InputTextArea class="form-control" id="form11Example7" rows="4" @bind-Value="@Order.OrderHeader.AdditionalInformation" ></InputTextArea>
-                                            <ValidationMessage For="()=>Order.OrderHeader.AdditionalInformation"></ValidationMessage>
-                                        </div>
-
-                                       
-
-                                          
-
-                                    </div>
-                                
-                               
-                                         <div class="text-center">
-                                <button type="submit" style="font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
-                                        font-style: normal;
-                                        font-size: .75rem;
-                                        font-weight: 700;
-                                        background-color: hsl(90, 40%, 50%);
-                                        color: white;" class="btn button-order col-md-10">
-                                    Place order
-                                </button>
-                         
+                    <div class="col-md-8 mb-8">
+                 
+                        <div class="card mb-4">
+                            <div class="card-header py-3">
+                                <h5 class="mb-0 text-font text-uppercase">Delivery address</h5>
                             </div>
+                        <EditForm Model="Order.OrderHeader" OnValidSubmit="HandleCheckout">
+                         <DataAnnotationsValidator></DataAnnotationsValidator>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">FirstName</label>
+                                <InputText  class="form-control" id="exampleInputPassword1" placeholder="Your name" @bind-Value=Order.OrderHeader.FirstName></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.FirstName" ></ValidationMessage>
                             </div>
-                </EditForm>
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">LastName</label>
+                                <InputText  class="form-control" id="exampleInputPassword1" placeholder="Your lastname" @bind-Value=Order.OrderHeader.LastName></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.LastName" ></ValidationMessage>
+                            </div>
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">Address</label>
+                                <InputText  class="form-control" id="exampleInputPassword1" placeholder="Your addres" @bind-Value=Order.OrderHeader.Address></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.Address" ></ValidationMessage>
+                            </div>
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">Phone</label>
+                                <InputText  class="form-control" id="exampleInputPassword1" placeholder="Your phone number" @bind-Value=Order.OrderHeader.Phone></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.Phone" ></ValidationMessage>
+                            </div>
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">Postal Code</label>
+                                <InputText  class="form-control" id="exampleInputPassword1" placeholder="Your postal code" @bind-Value=Order.OrderHeader.PostalCode></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.PostalCode" ></ValidationMessage>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Additional Information</label>
+                                <InputText class="form-control" id="exampleInputPassword1" placeholder="Additional Information" @bind-Value=Order.OrderHeader.AdditionalInformation></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.AdditionalInformation"></ValidationMessage>
+                            </div>
+                               <div class="form-group">
+                                <label for="exampleInputPassword1">Email</label>
+                                <InputText class="form-control" id="exampleInputPassword1" placeholder="Email" @bind-Value=Order.OrderHeader.Email></InputText>
+                                <ValidationMessage For="()=>Order.OrderHeader.Email"></ValidationMessage>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </EditForm>
 
-
-            </div>
-
-
-
+                           
+                        </div>
+                    </div>
                 <div class="col-md-4 mb-4 position-static">
                     <div class="card mb-4">
                         <div class="card-header py-3">
@@ -139,7 +102,7 @@ else
                                         font-size: .75rem;
                                         font-weight: 700;
                                         line-height: .813rem;
-                                        letter-spacing: 1.6px;">@((item.Price*item.Count).ToString("c"))</span>
+                                        letter-spacing: 1.6px;">@((item.Price * item.Count).ToString("c"))</span>
                                         <p class="mb-0 text-descriptions">@item.ProductName</p>
                                         <span class="text-descriptions fw-bold" style="font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
                                                 font-style: normal;
@@ -153,9 +116,6 @@ else
                                         </p>
                                     </div>
                                 </div>
-                                 
-
-
                             </div>
 
                         }
@@ -170,19 +130,19 @@ else
                                     <span>@Order.OrderHeader.OrderTotal.ToString("c")</span>
                                 </li>
                             </ul>
-                            <div class="card mb-4">
-                                <div class="card-body p-4 d-flex flex-row">
-                                    <div class="form-outline flex-fill">
-                                        <label class="form-label" for="form1">Discound code</label>
+                            @*  <div class="card mb-4">
+                        <div class="card-body p-4 d-flex flex-row">
+                        <div class="form-outline flex-fill">
+                        <label class="form-label" for="form1">Discound code</label>
 
-                                        <InputText id="form1" class="form-control form-control-lg" @bind-Value="@CouponCode" />
-                                    </div>
-                                    <button @onclick="(()=>SendCouponCode(CouponCode))" type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
-                                </div>
-                            </div>
+                        <InputText id="form1" class="form-control form-control-lg" @bind-Value="@CouponCode" />
+                        </div>
+                        <button  type="submit" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                        </div>
+                        </div>*@
                         </div>
                     </div>
-                  
+
                 </div>
 
             </div>
@@ -199,7 +159,7 @@ else
 @code {
     public bool IsProcessing { get; set; } = false;
     private OrderDTO Order { get; set; } = null;
-    private IEnumerable<ProductDTO> Products { get; set; } =new List<ProductDTO>();
+    private IEnumerable<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     private string CouponCode { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
@@ -236,7 +196,7 @@ else
             Order.OrderHeader.OrderTotal += (cart.Count * productPrice.Price);
         }
 
-        if(await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails) != null)
+        if (await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails) != null)
         {
             var userDetail = await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails);
             Order.OrderHeader.Email = userDetail.Email;
@@ -248,14 +208,29 @@ else
 
         IsProcessing = false;
     }
-
     private async Task HandleCheckout()
     {
-        
+        try
+        {
+
+            var paymentDto = new StripePaymentDTO()
+                {
+                    Order = Order
+                };
+
+            var result = await _paymentService.Checkout(paymentDto);
+
+            Order.OrderHeader.SessionId = result.Data.ToString();
+
+            var orderDTOSaved = await _orderService.Create(paymentDto);
+
+            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
-    private async Task SendCouponCode(string code)
-    {
-      
-    }
+  
 }

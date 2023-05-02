@@ -21,5 +21,6 @@ namespace E_CommerceForUdemy_Common
 
         public const string Local_Token = "Jwt_Token";
         public const string Local_UserDetails = "UserDetails";
+        public const string Local_OrderDetails = "OrderDetails";
     }
 }
