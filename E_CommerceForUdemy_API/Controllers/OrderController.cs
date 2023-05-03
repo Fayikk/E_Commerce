@@ -1,7 +1,9 @@
 ﻿using E_CommerceForUdemy_Business.Repository.IRepository;
+using E_CommerceForUdemy_DataAccess;
 using ECommerce_ForUdemy_Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 
 namespace E_CommerceForUdemy_API.Controllers
 {
@@ -50,8 +52,31 @@ namespace E_CommerceForUdemy_API.Controllers
         public async Task<IActionResult> Create([FromBody]StripePaymentDTO paymentDTO)
         {
             paymentDTO.Order.OrderHeader.OrderDate= DateTime.Now;   
-            var result = _orderRepository.Create(paymentDTO.Order);
+            var result =await _orderRepository.Create(paymentDTO.Order);
             return Ok(result);
+        }
+
+        [HttpPost("paymentsuccessful")]
+        public async Task<IActionResult> PaymentSuccessful([FromBody] OrderHeaderDTO orderHeaderDTO)
+        {
+            var service = new SessionService();
+            var sessionDetails = service.Get(orderHeaderDTO.SessionId);
+            if (sessionDetails.PaymentStatus == "paid")
+            {
+                var result = await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id);
+                //await _emailSender.SendEmailAsync(orderHeaderDTO.Email, "Tangy Order Confirmation",
+                    //"New Order has been created :" + orderHeaderDTO.Id);
+                if (result == null)
+                {
+                    return BadRequest(new ErrorModelDTO()
+                    {
+                        ErrorMessage = "Can not mark payment as successful"
+                    });
+                }
+                return Ok(result);
+            }
+
+            return BadRequest();
         }
     }
 }

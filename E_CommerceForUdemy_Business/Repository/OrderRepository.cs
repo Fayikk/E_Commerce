@@ -54,7 +54,8 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<OrderDTO> Create(OrderDTO objDTO)
         {
-           
+            try
+            {
                 var obj = _mapper.Map<OrderDTO, Order>(objDTO);
                 _db.OrderHeaders.Add(obj.OrderHeader);
                 await _db.SaveChangesAsync();
@@ -63,7 +64,7 @@ namespace E_CommerceForUdemy_Business.Repository
                 {
                     details.OrderHeaderId = obj.OrderHeader.Id;
                 }
-                _db.OrderDetails.AddRange(obj.OrderDetails);
+                 _db.OrderDetails.AddRange(obj.OrderDetails);
                 await _db.SaveChangesAsync();
 
                 return new OrderDTO()
@@ -72,7 +73,11 @@ namespace E_CommerceForUdemy_Business.Repository
                     OrderDetails = _mapper.Map<IEnumerable<OrderDetail>, IEnumerable<OrderDetailDTO>>(obj.OrderDetails).ToList()
                 };
 
-            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             return objDTO;
         }

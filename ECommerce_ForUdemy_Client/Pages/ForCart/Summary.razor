@@ -193,7 +193,7 @@ else
                     Product = product
                 };
             Order.OrderDetails.Add(orderDetailDTO);
-            Order.OrderHeader.OrderTotal += (cart.Count * productPrice.Price);
+            Order.OrderHeader.OrderTotal += (item.Count * productPrice.Price);
         }
 
         if (await _localStorageService.GetItemAsync<UserDTO>(Keys.Local_UserDetails) != null)
@@ -212,7 +212,7 @@ else
     {
         try
         {
-
+            IsProcessing = true;
             var paymentDto = new StripePaymentDTO()
                 {
                     Order = Order
@@ -220,14 +220,20 @@ else
 
             var result = await _paymentService.Checkout(paymentDto);
 
-            Order.OrderHeader.SessionId = result.Data.ToString();
+            var StripeSessionAndPI = result.Data.ToString().Split(';');
+
+            Order.OrderHeader.SessionId = StripeSessionAndPI[0];
+            Order.OrderHeader.PaymentIntentId = StripeSessionAndPI[1];
 
             var orderDTOSaved = await _orderService.Create(paymentDto);
 
-            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+            await _localStorageService.SetItemAsync(Keys.Local_OrderDetails, orderDTOSaved);
+
+            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", StripeSessionAndPI[0]);
         }
         catch (Exception e)
         {
+            //await _jsRuntime.ToastrError(e.Message);
             throw e;
         }
     }
