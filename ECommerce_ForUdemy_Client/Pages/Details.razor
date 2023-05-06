@@ -5,6 +5,7 @@
 @inject IProductService _productService
 @inject ICartService _cartService
 @inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
 <head>
     <title>Ürün Detay Sayfası</title>
 </head>
@@ -119,6 +120,8 @@ else
 
                 };
             await _cartService.Increment(shopCart);
+        await _jsRuntime.InvokeVoidAsync("ShowToastr", "success", "Ürün sepete eklendi");
+
             _navigationManager.NavigateTo("/");
       
 

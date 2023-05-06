@@ -10,5 +10,7 @@ namespace ECommerce_ForUdemy_Client.ViewModels
         public ProductPriceDTO ProductPrice { get; set; }
         public int Count { get; set; }
 
+        public decimal DiscountAmount { get; set; } 
+
     }
 }

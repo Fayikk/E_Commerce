@@ -130,16 +130,17 @@ else
                                     <span>@Order.OrderHeader.OrderTotal.ToString("c")</span>
                                 </li>
                             </ul>
-                            @*  <div class="card mb-4">
+                              <div class="card mb-4">
+
                         <div class="card-body p-4 d-flex flex-row">
                         <div class="form-outline flex-fill">
                         <label class="form-label" for="form1">Discound code</label>
 
                         <InputText id="form1" class="form-control form-control-lg" @bind-Value="@CouponCode" />
                         </div>
-                        <button  type="submit" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                        <button  type="submit" @onclick="()=>ImplementCode(CouponCode)"  class="btn btn-outline-warning btn-lg ms-3">Apply</button>
                         </div>
-                        </div>*@
+                        </div>
                         </div>
                     </div>
 
@@ -161,6 +162,7 @@ else
     private OrderDTO Order { get; set; } = null;
     private IEnumerable<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     private string CouponCode { get; set; } = null;
+    private int? DiscountAmount { get; set; } = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -208,6 +210,18 @@ else
 
         IsProcessing = false;
     }
+
+    private async Task ImplementCode(string couponCode)
+    {
+        var result = await _discountService.ImplementCouponCode(couponCode);
+        if(result == false)
+        {
+            DiscountAmount = 10;
+        }
+
+    }
+
+
     private async Task HandleCheckout()
     {
         try
@@ -215,7 +229,8 @@ else
             IsProcessing = true;
             var paymentDto = new StripePaymentDTO()
                 {
-                    Order = Order
+                    Order = Order,
+                    Discount = DiscountAmount
                 };
 
             var result = await _paymentService.Checkout(paymentDto);

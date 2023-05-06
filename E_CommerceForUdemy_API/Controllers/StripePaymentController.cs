@@ -44,7 +44,7 @@ namespace E_CommerceForUdemy_API.Controllers
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmount = (long)(item.Price * 100), //20.00 -> 2000
+                            UnitAmount = (long)(item.Price * 100)/paymentDTO.Discount, //20.00 -> 2000
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
@@ -53,6 +53,7 @@ namespace E_CommerceForUdemy_API.Controllers
                         },
                         Quantity = item.Count
                     };
+                    
                     options.LineItems.Add(sessionLineItem);
                 }
 

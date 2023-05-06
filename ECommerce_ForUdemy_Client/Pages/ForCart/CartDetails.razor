@@ -9,6 +9,7 @@
 @inject IProductService _productService
 @inject ICartService _cartService
 @inject IDiscountService _discountService
+@inject IJSRuntime _jsRuntime
 
 @if (IsProcessing)
 {
@@ -128,6 +129,7 @@ else
                 cart.ProductPrice = cart.Product.ProductPrices.FirstOrDefault(u => u.Id == cart.ProductPriceId);
                 OrderTotal += (cart.ProductPrice.Price * cart.Count);
             }
+
         }
         else
         {
@@ -149,6 +151,7 @@ else
 
         await LoadCart();
         IsProcessing = false;
+
     }
 
     private async Task Decrement(int ProductId, int ProductPriceId, int Count)
