@@ -3,6 +3,7 @@ using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_DataAccess;
 using E_CommerceForUdemy_DataAccess.Data;
 using ECommerce_ForUdemy_Models;
+using log4net;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,51 +27,112 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<CategoryDTO> Create(CategoryDTO objDTO)
         {
-            var obj = _mapper.Map<CategoryDTO, Category>(objDTO);
-            obj.CreatedDate = DateTime.Now;
-            var addedObj = await _db.Categories.AddAsync(obj);
-           await  _db.SaveChangesAsync();
+            try
+            {
+                var obj = _mapper.Map<CategoryDTO, Category>(objDTO);
+                obj.CreatedDate = DateTime.Now;
+                var addedObj = await _db.Categories.AddAsync(obj);
+                await _db.SaveChangesAsync();
 
-            return _mapper.Map<Category, CategoryDTO>(addedObj.Entity);
+                return _mapper.Map<Category, CategoryDTO>(addedObj.Entity);
+            }
+            catch (Exception ex)
+            {
+                var logger = LogManager.GetLogger(typeof(CategoryRepository));
+                logger.Error("Create Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+          
         }
 
         public async Task<int> Delete(int id)
         {
-            var obj = await _db.Categories.FirstOrDefaultAsync(u => u.Id == id);
-            if (obj != null)
+            try
             {
-                _db.Categories.Remove(obj);
-                return await _db.SaveChangesAsync();
+                var obj = await _db.Categories.FirstOrDefaultAsync(u => u.Id == id);
+                if (obj != null)
+                {
+                    _db.Categories.Remove(obj);
+                    return await _db.SaveChangesAsync();
+                }
+                return 0;
             }
-            return 0;
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(CategoryRepository));
+                logger.Error("Delete Metodunda hata bulunmamaktadır", ex);
+                return 0;
+            }
+          
         }
 
         public async Task<CategoryDTO> Get(int id)
         {
-            var obj = await _db.Categories.FirstOrDefaultAsync(u => u.Id == id);
-            if (obj != null)
+
+            try
             {
-                return _mapper.Map<Category, CategoryDTO>(obj);
+                var obj = await _db.Categories.FirstOrDefaultAsync(u => u.Id == id);
+                if (obj != null)
+                {
+                    return _mapper.Map<Category, CategoryDTO>(obj);
+                }
+                return new CategoryDTO();
             }
-            return new CategoryDTO();
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(CategoryRepository));
+                logger.Error("Get Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+
+
+         
+
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
+            try
+            {
+                return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
+
+            }
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(CategoryRepository));
+                logger.Error("Get Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
         }
 
         public async Task<CategoryDTO> Update(CategoryDTO objDTO)
         {
-            var objFromDb = await _db.Categories.FirstOrDefaultAsync(u => u.Id == objDTO.Id);
-            if (objFromDb != null)
+
+            try
             {
-                objFromDb.Name = objDTO.Name;
-                _db.Categories.Update(objFromDb);
-                await _db.SaveChangesAsync();
-                return _mapper.Map<Category, CategoryDTO>(objFromDb);
+                var objFromDb = await _db.Categories.FirstOrDefaultAsync(u => u.Id == objDTO.Id);
+                if (objFromDb != null)
+                {
+                    objFromDb.Name = objDTO.Name;
+                    _db.Categories.Update(objFromDb);
+                    await _db.SaveChangesAsync();
+                    return _mapper.Map<Category, CategoryDTO>(objFromDb);
+                }
+                return objDTO;
             }
-            return objDTO;
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(CategoryRepository));
+                logger.Error("Get Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+
+
+          
 
         }
     }

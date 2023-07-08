@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using log4net;
 
 namespace E_CommerceForUdemy_Business.Repository
 {
@@ -26,65 +27,134 @@ namespace E_CommerceForUdemy_Business.Repository
 
         public async Task<ProductDTO> Create(ProductDTO objDTO)
         {
-            var obj = _mapper.Map<ProductDTO, Product>(objDTO);
-        
-            var addedObj = await _db.Products.AddAsync(obj);
-            await _db.SaveChangesAsync();
+            try
+            {
+                var obj = _mapper.Map<ProductDTO, Product>(objDTO);
 
-            return _mapper.Map<Product, ProductDTO>(addedObj.Entity);
+                var addedObj = await _db.Products.AddAsync(obj);
+                await _db.SaveChangesAsync();
+
+                return _mapper.Map<Product, ProductDTO>(addedObj.Entity);
+            }
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("Create Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+          
         }
 
         public async Task<int> Delete(int id)
         {
-            var obj = await _db.Products.FirstOrDefaultAsync(u => u.Id == id);
-            if (obj != null)
+            try
             {
-                _db.Products.Remove(obj);
-                return await _db.SaveChangesAsync();
+                var obj = await _db.Products.FirstOrDefaultAsync(u => u.Id == id);
+                if (obj != null)
+                {
+                    _db.Products.Remove(obj);
+                    return await _db.SaveChangesAsync();
+                }
+                return 0;
             }
-            return 0;
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("Delete Metodunda hata bulunmamaktadır", ex);
+                return 0;
+            }
+         
         }
 
         public async Task<ProductDTO> Get(int id)
         {
-            var obj = await _db.Products.Include(x=>x.Category).Include(x=>x.ProductPrices).FirstOrDefaultAsync(u => u.Id == id);
-            if (obj != null)
+
+            try
             {
-                return _mapper.Map<Product, ProductDTO>(obj);
+                var obj = await _db.Products.Include(x => x.Category).Include(x => x.ProductPrices).FirstOrDefaultAsync(u => u.Id == id);
+                if (obj != null)
+                {
+                    return _mapper.Map<Product, ProductDTO>(obj);
+                }
+                return new ProductDTO();
             }
-            return new ProductDTO();
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("Get Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+
+        
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x=>x.Category).Include(x=>x.ProductPrices));
+            try
+            {
+                return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(x => x.Category).Include(x => x.ProductPrices));
+
+            }
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("GetAll Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
         }
 
         public async Task<List<ProductDTO>> GetProductByCategoryId(int id)
         {
-            var result = await _db.Products.Where(x => x.CategoryId == id).ToListAsync();
-            var mapper = _mapper.Map<List<Product>, List<ProductDTO>>(result);
-            return mapper;
+            try
+            {
+                var result = await _db.Products.Where(x => x.CategoryId == id).ToListAsync();
+                var mapper = _mapper.Map<List<Product>, List<ProductDTO>>(result);
+                return mapper;
+            }
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("GetAll Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+          
 
         }
 
         public async Task<ProductDTO> Update(ProductDTO objDTO)
         {
-            var objFromDb = await _db.Products.FirstOrDefaultAsync(u => u.Id == objDTO.Id);
-            if (objFromDb != null)
+
+            try
             {
-                objFromDb.Name = objDTO.Name;
-                objFromDb.Description = objDTO.Description;
-                objFromDb.ImageUrl = objDTO.ImageUrl;
-                objFromDb.CategoryId = objDTO.CategoryId;
-                objFromDb.Color = objDTO.Color;
-                objFromDb.ShopFavourites = objDTO.ShopFavourites;
-                objFromDb.CustomerFavourites = objDTO.CustomerFavourites;
-                _db.Products.Update(objFromDb);
-                await _db.SaveChangesAsync();
-                return _mapper.Map<Product, ProductDTO>(objFromDb);
+                var objFromDb = await _db.Products.FirstOrDefaultAsync(u => u.Id == objDTO.Id);
+                if (objFromDb != null)
+                {
+                    objFromDb.Name = objDTO.Name;
+                    objFromDb.Description = objDTO.Description;
+                    objFromDb.ImageUrl = objDTO.ImageUrl;
+                    objFromDb.CategoryId = objDTO.CategoryId;
+                    objFromDb.Color = objDTO.Color;
+                    objFromDb.ShopFavourites = objDTO.ShopFavourites;
+                    objFromDb.CustomerFavourites = objDTO.CustomerFavourites;
+                    _db.Products.Update(objFromDb);
+                    await _db.SaveChangesAsync();
+                    return _mapper.Map<Product, ProductDTO>(objFromDb);
+                }
+                return objDTO;
             }
-            return objDTO;
+            catch (Exception ex)
+            {
+
+                var logger = LogManager.GetLogger(typeof(ProductRepository));
+                logger.Error("GetAll Metodunda hata bulunmamaktadır", ex);
+                return null;
+            }
+           
 
 
         }
