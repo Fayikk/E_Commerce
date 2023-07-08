@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E_CommerceForUdemy_API", "E_CommerceForUdemy_API\E_CommerceForUdemy_API.csproj", "{5283099F-BD1A-4394-AB0A-5B60F86B4D45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E_Commerce_Test", "E_Commerce_Test\E_Commerce_Test.csproj", "{6E8E0AC3-66C9-4255-9944-A65511B3DDD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{5283099F-BD1A-4394-AB0A-5B60F86B4D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5283099F-BD1A-4394-AB0A-5B60F86B4D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5283099F-BD1A-4394-AB0A-5B60F86B4D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E8E0AC3-66C9-4255-9944-A65511B3DDD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E8E0AC3-66C9-4255-9944-A65511B3DDD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E8E0AC3-66C9-4255-9944-A65511B3DDD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E8E0AC3-66C9-4255-9944-A65511B3DDD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
