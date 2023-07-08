@@ -1,4 +1,5 @@
-﻿using E_CommerceForUdemy_Business.Repository.IRepository;
+﻿using E_CommerceForUdemy_API.MailService;
+using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_DataAccess;
 using ECommerce_ForUdemy_Models;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +13,11 @@ namespace E_CommerceForUdemy_API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly IMailHelper _mailHelper;
+        public OrderController(IOrderRepository orderRepository,IMailHelper mailHelper)
         {
             _orderRepository = orderRepository;
+            _mailHelper = mailHelper;
         }
 
         [HttpGet]
@@ -73,6 +76,8 @@ namespace E_CommerceForUdemy_API.Controllers
                         ErrorMessage = "Can not mark payment as successful"
                     });
                 }
+                _mailHelper.SendEmailForOrder("Siparişiniz Alındı"
+               , $"{orderHeaderDTO.SessionId} numaralı siparişiniz alındı,bizi tercih ettiğiniz için teşekkür ederiz", orderHeaderDTO.Email);
                 return Ok(result);
             }
 

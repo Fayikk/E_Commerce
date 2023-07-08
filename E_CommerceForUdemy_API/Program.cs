@@ -1,4 +1,5 @@
 using E_CommerceForUdemy_API.Helper;
+using E_CommerceForUdemy_API.MailService;
 using E_CommerceForUdemy_Business.Repository;
 using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_DataAccess;
@@ -21,6 +22,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 builder.Services.AddCors(o => o.AddPolicy("E_Commerce", builder =>
 {
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
