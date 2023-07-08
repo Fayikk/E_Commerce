@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E_CommerceForUdemy_DataAccess
 {
-    public class Discount
+    public class Discount : BaseMessage
     {
         [Key]
         public int Id { get; set; } 

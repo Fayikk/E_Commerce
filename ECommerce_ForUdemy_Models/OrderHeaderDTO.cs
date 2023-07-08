@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E_CommerceForUdemy_DataAccess
 {
-    public class OrderHeaderDTO
+    public class OrderHeaderDTO : BaseMessage
     {
         public int Id { get; set; }
         [Required]

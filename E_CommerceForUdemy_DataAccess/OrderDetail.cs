@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace E_CommerceForUdemy_DataAccess
 {
-    public class OrderDetail
+    public class OrderDetail 
     {
         public int Id { get; set; }
         [Required]

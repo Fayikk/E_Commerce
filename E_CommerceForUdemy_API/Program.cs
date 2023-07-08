@@ -1,5 +1,8 @@
 using E_CommerceForUdemy_API.Helper;
 using E_CommerceForUdemy_API.MailService;
+using E_CommerceForUdemy_Business.Consumer;
+using E_CommerceForUdemy_Business.RabbitMQOrderSender;
+using E_CommerceForUdemy_Business.RabbitMQSender;
 using E_CommerceForUdemy_Business.Repository;
 using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_DataAccess;
@@ -9,11 +12,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Stripe;
+//using Stripe;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//builder.Services.AddHostedService<RabbitMQOrderConsumer>();
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -23,6 +26,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IMailHelper, MailHelper>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddSingleton<IRabbitMQMessageSender,RabbitMQMessageSender>();
+builder.Services.AddSingleton<IRabbitMQOrderMessageSender, RabbitMQOrderMessageSender>();   
 builder.Services.AddCors(o => o.AddPolicy("E_Commerce", builder =>
 {
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
@@ -82,7 +88,7 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 var app = builder.Build();
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["ApiKey"];
+Stripe.StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["ApiKey"];
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

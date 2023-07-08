@@ -1,4 +1,5 @@
 ﻿using E_CommerceForUdemy_API.MailService;
+using E_CommerceForUdemy_Business.RabbitMQOrderSender;
 using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_DataAccess;
 using ECommerce_ForUdemy_Models;
@@ -14,10 +15,12 @@ namespace E_CommerceForUdemy_API.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMailHelper _mailHelper;
-        public OrderController(IOrderRepository orderRepository,IMailHelper mailHelper)
+        private readonly IRabbitMQOrderMessageSender _messageSender;
+        public OrderController(IOrderRepository orderRepository,IMailHelper mailHelper,IRabbitMQOrderMessageSender messageSender)
         {
             _orderRepository = orderRepository;
             _mailHelper = mailHelper;
+            _messageSender = messageSender;
         }
 
         [HttpGet]

@@ -1,10 +1,9 @@
-﻿
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace E_CommerceForUdemy_API.MailService
+namespace E_CommerceForUdemy_Business.Core
 {
-    public class MailHelper : IMailHelper
+    public  class MailHelper : IMailHelper
     {
         public void SendEmailForOrder(string subject, string body, string mail)
         {

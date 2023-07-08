@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E_CommerceForUdemy_DataAccess
 {
-    public class OrderHeader
+    public class OrderHeader 
     {
         [Key]
         public int Id { get; set; }

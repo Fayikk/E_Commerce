@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using E_CommerceForUdemy_Business.RabbitMQOrderSender;
 using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_Common;
 using E_CommerceForUdemy_DataAccess;
@@ -13,11 +14,13 @@ namespace E_CommerceForUdemy_Business.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
+        private readonly IRabbitMQOrderMessageSender _messageSender;
 
-        public OrderRepository(ApplicationDbContext db, IMapper mapper)
+        public OrderRepository(ApplicationDbContext db, IMapper mapper,IRabbitMQOrderMessageSender messageSender)
         {
             _db = db;
             _mapper = mapper;
+            _messageSender = messageSender;
         }
 
         //public async Task<OrderHeaderDTO> CancelOrder(int id)
@@ -143,7 +146,10 @@ namespace E_CommerceForUdemy_Business.Repository
             {
                 data.Status = Keys.Status_Confirmed;
                 await _db.SaveChangesAsync();
-                return _mapper.Map<OrderHeader, OrderHeaderDTO>(data);
+                var response = _mapper.Map<OrderHeader, OrderHeaderDTO>(data);
+                _messageSender.SendMessage(response, "orderServiceQueue");
+
+                return response;
             }
             return new OrderHeaderDTO();
         }
