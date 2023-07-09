@@ -1,22 +1,14 @@
-﻿using ECommerce_ForUdemy_Client.Service.IService;
+﻿using E_CommerceForUdemy_API.MailService;
+using ECommerce_ForUdemy_Client.Service.IService;
 using MailKit.Net.Smtp;
 using MimeKit;
-using Nest;
 
-namespace ECommerce_ForUdemy_Client.MailService
+namespace E_CommerceForUdemy_API.MailServiceForPassword
 {
     public class MailHelperForgotPassword : IMailHelperForgotPassword
     {
-        private readonly IUserService _userService;
-        public MailHelperForgotPassword(IUserService userService)
+        public bool SendEmailForResEmail(string subject,string mail,string forgotPasswordNumber)
         {
-            _userService = userService; 
-        }
-
-        public void SendEmailForResEmail(string subject,  string mail,string forgotPasswordNumber)
-        {
-
-            //var userDetail = await _userService.GetUserByEmail(mail);
 
             string body = $"https://localhost:7034/ForgotPassword/{forgotPasswordNumber}";
             try
@@ -36,6 +28,7 @@ namespace ECommerce_ForUdemy_Client.MailService
                 emailClient.Authenticate("veznedaroglufayik2@gmail.com", "wfqvpjvukemfkiam");
                 emailClient.Send(emailToSend);
                 emailClient.Disconnect(true);
+                return true;
             }
             catch (Exception ex)
             {

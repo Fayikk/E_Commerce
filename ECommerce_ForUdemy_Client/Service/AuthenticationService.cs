@@ -22,6 +22,22 @@ namespace ECommerce_ForUdemy_Client.Service
             _authStateProvider = authStateProvider;
         }
 
+
+        public async Task<bool> ChangePassword(NewPasswordModel model)
+        {
+            var content = JsonConvert.SerializeObject(model);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/Account/UpdatePassword", bodyContent);
+            string responseResult = response.Content.ReadAsStringAsync().Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<NewPasswordModel>(responseResult);
+                return true;
+            }
+            return false;
+        }
+
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO signInRequest)
         {
             var content = JsonConvert.SerializeObject(signInRequest);

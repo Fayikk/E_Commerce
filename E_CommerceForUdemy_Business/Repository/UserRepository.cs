@@ -30,5 +30,18 @@ namespace E_CommerceForUdemy_Business.Repository
             }
             return null;
         }
+
+        public async Task<ApplicationUser> GetUserByForgotPassword(string forgotPassword)
+        {
+            if (forgotPassword != null)
+            {
+                var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.ForgotPasswordNumber.ToString() == forgotPassword);
+                if (user != null)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using E_CommerceForUdemy_API.Helper;
+using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_Common;
 using E_CommerceForUdemy_DataAccess;
 using ECommerce_ForUdemy_Models;
@@ -21,17 +22,20 @@ namespace E_CommerceForUdemy_API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _aPISettings;
+        private readonly IUserRepository _userService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            IOptions<APISettings> options)
+            IOptions<APISettings> options,
+            IUserRepository userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _aPISettings = options.Value;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -74,6 +78,23 @@ namespace E_CommerceForUdemy_API.Controllers
             }
             return StatusCode(201);
         }
+
+
+
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody]NewPasswordModel model)
+        {
+            var userDetail = _userService.GetUserByForgotPassword(model.ChangePasswordNumber);
+            var user = userDetail.Result;
+            user.PasswordHash = model.NewPassword;
+            var result = _userManager.UpdateAsync(user);
+            if (result.IsCompletedSuccessfully)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
 
 
         [HttpPost("login")]

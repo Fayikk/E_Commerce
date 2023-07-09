@@ -1,6 +1,7 @@
 using E_CommerceForUdemy_API.Extension;
 using E_CommerceForUdemy_API.Helper;
 using E_CommerceForUdemy_API.MailService;
+using E_CommerceForUdemy_API.MailServiceForPassword;
 using E_CommerceForUdemy_Business.Consumer;
 using E_CommerceForUdemy_Business.RabbitMQOrderSender;
 using E_CommerceForUdemy_Business.RabbitMQSender;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IMailHelper, MailHelper>();
+builder.Services.AddScoped<IMailHelperForgotPassword, MailHelperForgotPassword>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IRabbitMQMessageSender,RabbitMQMessageSender>();

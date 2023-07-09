@@ -7,5 +7,7 @@ namespace ECommerce_ForUdemy_Client.Service.IService
        public Task<SignUpResponseDTO> RegisterUser(SignUpRequestDTO requestDTO);
        public Task<LoginResponseDTO> Login(LoginRequestDTO requestDTO);
         Task Logout();
+        Task<bool> ChangePassword(NewPasswordModel model);
+
     }
 }

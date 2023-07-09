@@ -10,5 +10,6 @@ namespace E_CommerceForUdemy_Business.Repository.IRepository
     public interface IUserRepository
     {
         Task<ApplicationUser> GetUserByEmail(string email);
+        Task<ApplicationUser> GetUserByForgotPassword(string forgotPassword);
     }
 }
