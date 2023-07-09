@@ -1,3 +1,4 @@
+using E_CommerceForUdemy_API.Extension;
 using E_CommerceForUdemy_API.Helper;
 using E_CommerceForUdemy_API.MailService;
 using E_CommerceForUdemy_Business.Consumer;
@@ -28,7 +29,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddSingleton<IRabbitMQMessageSender,RabbitMQMessageSender>();
-builder.Services.AddSingleton<IRabbitMQOrderMessageSender, RabbitMQOrderMessageSender>();   
+builder.Services.AddSingleton<IRabbitMQOrderMessageSender, RabbitMQOrderMessageSender>();
+builder.Services.AddElastic(builder.Configuration);
 builder.Services.AddCors(o => o.AddPolicy("E_Commerce", builder =>
 {
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

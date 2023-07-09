@@ -10,19 +10,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using log4net;
+using Elastic.Clients.Elasticsearch;
 
 namespace E_CommerceForUdemy_Business.Repository
 {
     public class ProductRepository:IProductRepository
     {
         private readonly ApplicationDbContext _db;
+        private readonly ElasticsearchClient _elasticSearchClient;
+        private const string? indexName = "productRepo";
         private readonly IMapper _mapper;
 
         public ProductRepository(ApplicationDbContext db,
-                                IMapper mapper)
+                                IMapper mapper,
+                                ElasticsearchClient elasticSearchClient)
         {
             _db = db;
             _mapper = mapper;
+            _elasticSearchClient = elasticSearchClient;
         }
 
         public async Task<ProductDTO> Create(ProductDTO objDTO)
@@ -33,7 +38,7 @@ namespace E_CommerceForUdemy_Business.Repository
 
                 var addedObj = await _db.Products.AddAsync(obj);
                 await _db.SaveChangesAsync();
-
+                await _elasticSearchClient.IndexAsync(objDTO, x => x.Index(indexName));
                 return _mapper.Map<Product, ProductDTO>(addedObj.Entity);
             }
             catch (Exception ex)
