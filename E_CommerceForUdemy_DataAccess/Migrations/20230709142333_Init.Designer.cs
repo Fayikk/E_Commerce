@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_CommerceForUdemy_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230709084017_Init")]
+    [Migration("20230709142333_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -439,6 +439,9 @@ namespace E_CommerceForUdemy_DataAccess.Migrations
             modelBuilder.Entity("E_CommerceForUdemy_DataAccess.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<Guid>("ForgotPasswordNumber")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -10,5 +10,6 @@ namespace E_CommerceForUdemy_DataAccess
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
+        public Guid ForgotPasswordNumber { get; set; }    
     }
 }

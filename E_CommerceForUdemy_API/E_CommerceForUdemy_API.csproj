@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ECommerce_ForUdemy_Client\ECommerce_ForUdemy_Client.csproj" />
     <ProjectReference Include="..\E_CommerceForUdemy_Business\E_CommerceForUdemy_Business.csproj" />
     <ProjectReference Include="..\E_CommerceForUdemy_DataAccess\E_CommerceForUdemy_DataAccess.csproj" />
   </ItemGroup>

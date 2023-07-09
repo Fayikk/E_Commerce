@@ -48,7 +48,8 @@ namespace E_CommerceForUdemy_API.Controllers
                 Email = signUpRequestDTO.Email,
                 Name = signUpRequestDTO.Name,
                 PhoneNumber = signUpRequestDTO.PhoneNumber,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                ForgotPasswordNumber = Guid.NewGuid(),
             };
 
             var result = await _userManager.CreateAsync(user, signUpRequestDTO.Password);
@@ -133,6 +134,12 @@ namespace E_CommerceForUdemy_API.Controllers
             }
             return StatusCode(201);
         }
+
+        //[HttpPost("ForgotMyPassword")]
+        //public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordModel forgotPassword)
+        //{
+
+        //}
 
 
         private SigningCredentials GetSigningCredentials()
