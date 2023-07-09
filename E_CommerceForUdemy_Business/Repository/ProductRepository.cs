@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using log4net;
 using Elastic.Clients.Elasticsearch;
+using E_CommerceForUdemy_DataAccess.ElasticSearchEntities;
+using Elastic.Clients.Elasticsearch.QueryDsl;
+using ECommerce_ForUdemy_Models.ElasticSearchViewModel;
 
 namespace E_CommerceForUdemy_Business.Repository
 {
@@ -18,7 +21,7 @@ namespace E_CommerceForUdemy_Business.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly ElasticsearchClient _elasticSearchClient;
-        private const string? indexName = "productRepo";
+        private const string? indexName = "productrepo";
         private readonly IMapper _mapper;
 
         public ProductRepository(ApplicationDbContext db,
@@ -38,7 +41,18 @@ namespace E_CommerceForUdemy_Business.Repository
 
                 var addedObj = await _db.Products.AddAsync(obj);
                 await _db.SaveChangesAsync();
-                await _elasticSearchClient.IndexAsync(objDTO, x => x.Index(indexName));
+                ProductElastic productElastic = new ProductElastic();
+                productElastic.ProductName = addedObj.Entity.Name;
+                productElastic.ProductDescription = addedObj.Entity.Description;  
+                productElastic.Color = addedObj.Entity.Color;   
+                productElastic.Id = addedObj.Entity.Id; 
+               var response =  await _elasticSearchClient.IndexAsync(productElastic, x => x.Index(indexName));
+
+                if (!response.IsSuccess())
+                {
+                    return null;
+                }
+                
                 return _mapper.Map<Product, ProductDTO>(addedObj.Entity);
             }
             catch (Exception ex)
@@ -163,5 +177,50 @@ namespace E_CommerceForUdemy_Business.Repository
 
 
         }
+
+
+        public async Task<List<ProductElastic>> SearchAsync(ProductSearchViewModel searchViewModel)
+        {
+            List<Action<QueryDescriptor<ProductElastic>>> listQuery = new();
+
+            if (searchViewModel is null)
+            {
+                listQuery.Add(q => q.MatchAll());
+                return await CalculateResultSet(listQuery);
+            }
+
+            if (!string.IsNullOrEmpty(searchViewModel.ProductName))
+            {
+                listQuery.Add((q) => q.Match(m => m.Field(f => f.ProductName).Query(searchViewModel.ProductName)));
+
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.ProductDescription))
+            {
+                listQuery.Add((q) => q.Match(m => m.Field(f => f.ProductDescription).Query(searchViewModel.ProductDescription)));
+
+            }
+            if (!string.IsNullOrEmpty(searchViewModel.Color))
+            {
+                listQuery.Add((q) => q.Match(m => m.Field(f => f.Color).Query(searchViewModel.Color)));
+
+            }
+            if (!listQuery.Any())
+            {
+                listQuery.Add(q => q.MatchAll());
+            }
+
+            return await CalculateResultSet( listQuery);
+        }
+
+        private async Task<List<ProductElastic>> CalculateResultSet(List<Action<QueryDescriptor<ProductElastic>>> listQuery)
+        {
+            var result = await _elasticSearchClient.SearchAsync<ProductElastic>(s => s.Index(indexName).Size(1000).Query(q => q.Bool(b => b.Must(listQuery.ToArray()))));
+            //foreach (var hit in result.Hits)
+            //{
+            //    hit.Source.Id = hit.Id;
+            //}
+            return result.Documents.ToList();
+        }
+
     }
 }

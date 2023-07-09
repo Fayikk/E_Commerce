@@ -28,7 +28,7 @@ namespace E_Commerce_Test.ControllerTests
             // Controller'ın ve repository'nin bağımlılıklarını burada ayarlayabilirsiniz.
             // Örneğin, _productRepository = new ProductRepository(mockedDependencies);
             // şeklinde bir mock ProductRepository kullanabilirsiniz.
-            _productRepository = new ProductRepository(_db,_mapper);
+            //_productRepository = new ProductRepository(_db,_mapper);
 
             _controller = new ProductController(_productRepository);
         }

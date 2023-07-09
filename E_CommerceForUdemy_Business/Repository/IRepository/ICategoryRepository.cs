@@ -1,4 +1,6 @@
-﻿using ECommerce_ForUdemy_Models;
+﻿using E_CommerceForUdemy_DataAccess.ElasticSearchEntities;
+using ECommerce_ForUdemy_Models;
+using ECommerce_ForUdemy_Models.ElasticSearchViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,6 @@ namespace E_CommerceForUdemy_Business.Repository.IRepository
         public Task<int> Delete(int id);
         public Task<CategoryDTO> Get(int id);
         public Task<IEnumerable<CategoryDTO>> GetAll();
+        Task<List<CategoryElastic>> SearchAsync(CategorySearchViewModel model);
     }
 }
