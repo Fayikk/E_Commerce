@@ -2,6 +2,7 @@
 using E_CommerceForUdemy_Business.Repository.IRepository;
 using E_CommerceForUdemy_Common;
 using E_CommerceForUdemy_DataAccess;
+using E_CommerceForUdemy_DataAccess.Data;
 using ECommerce_ForUdemy_Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,14 +24,17 @@ namespace E_CommerceForUdemy_API.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _aPISettings;
         private readonly IUserRepository _userService;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<APISettings> options,
-            IUserRepository userService)
+            IUserRepository userService,
+            ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -81,14 +85,13 @@ namespace E_CommerceForUdemy_API.Controllers
 
 
 
-        [HttpPut("UpdatePassword")]
+        [HttpPost("UpdatePassword")]
         public async Task<IActionResult> UpdatePassword([FromBody]NewPasswordModel model)
         {
-            var userDetail = _userService.GetUserByForgotPassword(model.ChangePasswordNumber);
-            var user = userDetail.Result;
-            user.PasswordHash = model.NewPassword;
-            var result = _userManager.UpdateAsync(user);
-            if (result.IsCompletedSuccessfully)
+            var userDetail = await _userService.GetUserByForgotPassword(model.ChangePasswordNumber);
+            var newPassword =  _userManager.PasswordHasher.HashPassword(userDetail,model.NewPassword);
+            userDetail.PasswordHash= newPassword;
+            if (await _context.SaveChangesAsync() > 0)
             {
                 return Ok();
             }
